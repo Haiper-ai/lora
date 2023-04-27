@@ -140,9 +140,9 @@ def blip_captioning_dataset(
         inputs = processor(image, text=text, return_tensors="pt").to("cuda")
         out = model.generate(
             **inputs, max_length=150, do_sample=True, top_k=50, temperature=0.7
-        )
+        ).strip()
         caption = processor.decode(out[0], skip_special_tokens=True)
-
+        
         captions.append(caption)
 
     return captions
