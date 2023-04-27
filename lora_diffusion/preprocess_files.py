@@ -122,10 +122,7 @@ def clipseg_mask_generator(
 def blip_captioning_dataset(
     images: List[Image.Image],
     text: Optional[str] = None,
-    model_id: Literal[
-        "Salesforce/blip-image-captioning-large",
-        "Salesforce/blip-image-captioning-base",
-    ] = "Salesforce/blip-image-captioning-large",
+    model_id: str = "Salesforce/blip2-opt-2.7b",
     device=torch.device("cuda" if torch.cuda.is_available() else "cpu"),
     **kwargs,
 ) -> List[str]:
@@ -133,10 +130,10 @@ def blip_captioning_dataset(
     Returns a list of captions for the given images
     """
 
-    from transformers import BlipProcessor, BlipForConditionalGeneration
+    from transformers import AutoProcessor, Blip2ForConditionalGeneration
 
-    processor = BlipProcessor.from_pretrained(model_id)
-    model = BlipForConditionalGeneration.from_pretrained(model_id).to(device)
+    processor = AutoProcessor.from_pretrained(model_id)
+    model = Blip2ForConditionalGeneration.from_pretrained(model_id).to(device)
     captions = []
 
     for image in tqdm(images):
